@@ -1,42 +1,19 @@
 from numba import njit
 import numpy as np
-#import LennardJones
-import utils
 import Potts
-import copy
 from random import randint
 from random import normalvariate
 from random import random
 
-#@njit
-#def trial(q, mu, stdev, L):
-#    """Computes the wrapped trial configuration
-#    
-#    :param q:
-#        original configuration
-#    :param mu:
-#        mean of distribution
-#    :param var:
-#        variance of distribution
-#    :param L:
-#        box sidelength
-#        
-#    :Return:
-#        N x 3 numpy array containing wrapped trial configuration coordinates
-#        and potential energy of trial configuration."""
-#    
-#    qtest = q.copy()
-#    p = np.random.randint(low=0,high=q.shape[0]-1)
-#    for i in range(3):
-#        qtest[p,i] += float(np.random.normal(loc=0,scale=stdev))
-#
-#    qtest = utils.wrap(qtest, L)
-#    U_trial, D = LennardJones.lj(qtest, L)
-#    return qtest, U_trial, D
-
 @njit
 def test(Delta_S):
-    """Test the trial configuration"""
+    """Test the trial configuration
+    
+    :param Delta_S:
+        Change in entropy from WL trial step
+        
+    :Return:
+        Boolean for if trial step was accepted or rejected"""
 
     u = np.random.random()
     e = np.exp(Delta_S)
@@ -48,6 +25,21 @@ def test(Delta_S):
     
 @njit
 def trial_potts(lattice, q, U_current, J):
+    """Generates trial step and computes change in energy and lattice
+    configuration.
+    
+    :param lattice:
+        Numpy array containing the current lattice configuration
+    :param q:
+        Number of possible states per lattice site
+    :param U_current:
+        Total energy of lattice before trial step
+    :param J:
+        Lattice interaction coefficient
+    
+    :Return:
+        Total energy of lattice and lattice configuration after trial step.
+    """
     lattice_test = lattice.copy()
     U_trial=0
     p_row = np.random.randint(low=0, high=lattice.shape[0])

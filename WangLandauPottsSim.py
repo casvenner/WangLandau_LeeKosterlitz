@@ -3,11 +3,37 @@ import numpy as np
 import utils
 import Potts
 import WangLandau
-import copy
 
 @njit(cache=True)
 def simulation(lattice, N, S_hist, E_hist, E_bin_edges, num_bins, J, q, 
                f, seed):
+    """Performs a WL simulation of the q-state Potts model.
+    
+    :param lattice:
+        Numpy array containing the initial lattice configuration
+    :param N:
+        number of lattice sites
+    :param S_hist:
+        Numpy array containing the histogram of thenatural logarithm 
+        of the DOS
+    :param E_hist:
+        Numpy array containing the energy histogram
+    :param E_bin_edges:
+        Numpy array containing the values of the bin edges of the
+        energy histogram
+    :param num_bins:
+        The number of bins of the energy histogram
+    :param J:
+        Lattice interaction coefficient
+    :param q:
+        Number of possible states per lattice site
+    :param f:
+        initial WL modification factor
+    :param seed:
+        Random number generator seed
+        
+    :Return:
+        histogram containing the natural logarithm of DOS"""
     np.random.seed(seed)
     accepted_steps=0
     rejected_steps=1
@@ -47,7 +73,7 @@ def simulation(lattice, N, S_hist, E_hist, E_bin_edges, num_bins, J, q,
     return S_hist
     
 seed = 12345
-L = 12
+L = 8
 q = 8
 J = 1
 E_min = -2*(L**2)
