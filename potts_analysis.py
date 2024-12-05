@@ -112,13 +112,16 @@ def compute_deltaF_and_convert_F_to_txtfile(pdf_name):
     return DeltaF
 
 
+def main():
+    Delta_F = []
+    L_list = [12, 16, 24, 32]
+    T_list = [0.756, 0.7515, 0.7481, 0.74675]
+    for i in range(4):
+        L = L_list[i]
+        T = T_list[i]
+        Delta_F.append(compute_deltaF_and_convert_F_to_txtfile(
+            "Boltzmann_hist_potts_q8_L"+str(L)+"_f1neg8_T"+str(T)))
+    np.savetxt(fname="data/Delta_F_12_16_24_32", X=Delta_F)
 
-Delta_F = []
-L_list = [12, 16, 24, 32]
-T_list = [0.756, 0.7515, 0.7481, 0.74675]
-for i in range(4):
-    L = L_list[i]
-    T = T_list[i]
-    Delta_F.append(compute_deltaF_and_convert_F_to_txtfile(
-        "Boltzmann_hist_potts_q8_L"+str(L)+"_f1neg8_T"+str(T)))
-np.savetxt(fname="data/Delta_F_12_16_24_32", X=Delta_F)
+if __name__ == "__main__":
+    main()

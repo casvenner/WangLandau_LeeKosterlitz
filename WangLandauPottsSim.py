@@ -71,22 +71,29 @@ def simulation(lattice, N, S_hist, E_hist, E_bin_edges, num_bins, J, q,
                 print(i)
                 print(f)
     return S_hist
-    
-seed = 12345
-L = 8
-q = 8
-J = 1
-E_min = -2*(L**2)
-E_max = 0
-num_bins = int(E_max - E_min)
-f = 1
 
-S_hist = np.zeros([num_bins])
-E_hist = np.zeros([num_bins])
-E_bin_edges = utils.compute_bin_edges(E_min, E_max, num_bins)
-lattice = Potts.initialize_lattice(q, L, L, seed)
+def main():
+    #initialize variables    
+    seed = 12345
+    L = 8
+    q = 8
+    J = 1
+    E_min = -2*(L**2)
+    E_max = 0
+    num_bins = int(E_max - E_min)
+    f = 1
 
-S_hist = simulation(lattice, L**2, S_hist, E_hist, E_bin_edges, num_bins, J, q,
-                    f, seed)
+    #initialize histograms and lattice configuration
+    S_hist = np.zeros([num_bins])
+    E_hist = np.zeros([num_bins])
+    E_bin_edges = utils.compute_bin_edges(E_min, E_max, num_bins)
+    lattice = Potts.initialize_lattice(q, L, L, seed)
 
-np.savetxt("S_hist_Potts", S_hist)
+    #run simulation
+    S_hist = simulation(lattice, L**2, S_hist, E_hist, E_bin_edges, num_bins, J, q,
+                        f, seed)
+
+    np.savetxt("S_hist_Potts", S_hist)
+
+if __name__ == "__main__":
+    main()
